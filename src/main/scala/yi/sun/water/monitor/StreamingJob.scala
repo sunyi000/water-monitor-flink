@@ -23,6 +23,7 @@ import org.apache.flink.streaming.api.TimeCharacteristic
 import org.apache.flink.streaming.api.scala._
 import yi.sun.water.monitor.sources.WaterEventSource
 import yi.sun.water.monitor.utils.WaterBase
+import yi.sun.water.monitor.utils.MissingSolutionException
 
 /**
  * Skeleton for a Flink Streaming Job.
@@ -37,7 +38,9 @@ import yi.sun.water.monitor.utils.WaterBase
  * method, change the respective entry in the POM.xml file (simply search for 'mainClass').
  */
 object StreamingJob extends WaterBase{
-  def main(args: Array[String]) {
+  def main (args: Array[String]) {
+
+    def parallelism = WaterBase.parallelism
     // set up the streaming execution environment
     val env = StreamExecutionEnvironment.getExecutionEnvironment
     val params = ParameterTool.fromArgs(args)
@@ -49,14 +52,14 @@ object StreamingJob extends WaterBase{
     env.setStreamTimeCharacteristic(TimeCharacteristic.EventTime)
     env.setParallelism(parallelism)
 
-    val events = env.addSource(waterSourceOrTest(new WaterEventSource(input, maxDelay, speed)))
+    val events = env.addSource(WaterBase.waterSourceOrTest(new WaterEventSource(input, maxDelay, speed)))
 
     val filteredEvents = events
       // filter out rides that do not start and end in NYC
-      .filter(events => throw new MissingSolutionException)
+//      .filter(events => throw new MissingSolutionException)
 
     // print the filtered stream
-    printOrTest(filteredEvents)
+    WaterBase.printOrTest(filteredEvents)
 
     // run the cleansing pipeline
     env.execute("Taxi Ride Cleansing")

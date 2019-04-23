@@ -73,7 +73,7 @@ public class WaterEvent implements Serializable {
     public static WaterEvent fromString(String line) {
 
         String[] tokens = line.split(",");
-        if (tokens.length != 8) {
+        if (tokens.length != 11) {
             throw new RuntimeException("Invalid record: " + line);
         }
 
@@ -82,12 +82,13 @@ public class WaterEvent implements Serializable {
         try {
             waterEvent.eventId = tokens[0];
             waterEvent.timestamp = DateTime.parse(tokens[1], timeFormatter);
-            waterEvent.temperature = StringUtils.isNumeric(tokens[2]) ? Float.parseFloat(tokens[2]) : 0.0f;
-            waterEvent.disOxy = StringUtils.isNumeric(tokens[3]) ? Float.parseFloat(tokens[3]) : 0.0f;
-            waterEvent.conductivity = StringUtils.isNumeric(tokens[4]) ? Float.parseFloat(tokens[4]) : 0.0f;
-            waterEvent.ph = StringUtils.isNumeric(tokens[5]) ? Float.parseFloat(tokens[5]) : 0.0f;
-            waterEvent.turbidity = StringUtils.isNumeric(tokens[6]) ? Float.parseFloat(tokens[6]) : 0.0f;
-            waterEvent.orp = StringUtils.isNumeric(tokens[7]) ? Float.parseFloat(tokens[7]) : 0.0f;
+            waterEvent.temperature = tokens[2].equals("NULL") ? 0.0f : Float.parseFloat(tokens[2]);
+            waterEvent.disOxy =  Float.parseFloat(tokens[3]);
+            waterEvent.conductivity = Float.parseFloat(tokens[4]) ;
+            waterEvent.ph =  Float.parseFloat(tokens[5]);
+            waterEvent.turbidity = Float.parseFloat(tokens[6]) ;
+            waterEvent.orp = Float.parseFloat(tokens[7]) ;
+         //   waterEvent.orp = StringUtils.isNumeric(tokens[7]) ? Float.parseFloat(tokens[7]) : 0.0f;
             waterEvent.barrierId = tokens[8];
             waterEvent.siteId = tokens[9];
 

@@ -11,7 +11,7 @@ public class WaterBase {
     public static SinkFunction out = null;
     public static int parallelism = 4;
 
-    public final static String pathToWaterData = "/home/yisun/Documents/study/water-monitoring-flink/data-all.csv.gz";
+    public final static String pathToWaterData = "/home/yisun/Documents/study/water-monitoring-flink/data-all-1.csv.gz";
 
     public static SourceFunction<WaterEvent> waterSourceOrTest(SourceFunction<WaterEvent> source) {
         if (waterEvent == null) {
