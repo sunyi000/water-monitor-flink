@@ -57,13 +57,11 @@ under the License.
 			<groupId>org.apache.flink</groupId>
 			<artifactId>flink-scala_${scala.binary.version}</artifactId>
 			<version>${flink.version}</version>
-			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.flink</groupId>
 			<artifactId>flink-streaming-scala_${scala.binary.version}</artifactId>
 			<version>${flink.version}</version>
-			<scope>provided</scope>
 		</dependency>
 
 		<!-- Scala Library, provided by Flink as well. -->
@@ -71,9 +69,17 @@ under the License.
 			<groupId>org.scala-lang</groupId>
 			<artifactId>scala-library</artifactId>
 			<version>${scala.version}</version>
-			<scope>provided</scope>
+			</dependency>
+		<dependency>
+			<groupId>org.apache.flink</groupId>
+			<artifactId>flink-java</artifactId>
+			<version>${flink.version}</version>
 		</dependency>
-
+		<dependency>
+			<groupId>org.apache.flink</groupId>
+			<artifactId>flink-streaming-java_2.11</artifactId>
+			<version>${flink.version}</version>
+		</dependency>
 		<!-- Add connector dependencies here. They must be in the default scope (compile). -->
 
 		<!-- Example:
@@ -273,6 +279,16 @@ under the License.
 					<artifactId>scala-library</artifactId>
 					<version>${scala.version}</version>
 					<scope>compile</scope>
+				</dependency>
+				<dependency>
+					<groupId>org.apache.flink</groupId>
+					<artifactId>flink-java</artifactId>
+					<version>${flink.version}</version>
+				</dependency>
+				<dependency>
+					<groupId>org.apache.flink</groupId>
+					<artifactId>flink-streaming-java_2.11</artifactId>
+					<version>${flink.version}</version>
 				</dependency>
 			</dependencies>
 		</profile>

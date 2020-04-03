@@ -24,6 +24,7 @@ import org.apache.flink.streaming.api.scala._
 import yi.sun.water.monitor.sources.WaterEventSource
 import yi.sun.water.monitor.utils.WaterBase
 import yi.sun.water.monitor.utils.MissingSolutionException
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment
 
 /**
  * Skeleton for a Flink Streaming Job.

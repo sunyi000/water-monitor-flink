@@ -39,21 +39,14 @@ public class WaterEventSource implements SourceFunction<WaterEvent> {
         this(dataFilePath, 0, 1);
     }
 
-    /**
-     * Serves the TaxiFare records from the specified and ordered gzipped input file.
-     * Rides are served exactly in order of their time stamps
-     * in a serving speed which is proportional to the specified serving speed factor.
-     *
-     * @param dataFilePath The gzipped input file from which the TaxiFare records are read.
-     * @param servingSpeedFactor The serving speed factor by which the logical serving time is adjusted.
-     */
+
     public WaterEventSource(String dataFilePath, int servingSpeedFactor) {
         this(dataFilePath, 0, servingSpeedFactor);
     }
 
     /**
-     * Serves the TaxiFare records from the specified and ordered gzipped input file.
-     * Rides are served out-of time stamp order with specified maximum random delay
+     * Serves the WaterEent records from the specified and ordered gzipped input file.
+     * Events are served out-of time stamp order with specified maximum random delay
      * in a serving speed which is proportional to the specified serving speed factor.
      *
      * @param dataFilePath The gzipped input file from which the TaxiFare records are read.
@@ -104,7 +97,7 @@ public class WaterEventSource implements SourceFunction<WaterEvent> {
         String line;
         WaterEvent ev;
         if (reader.ready() && (line = reader.readLine()) != null) {
-            // read first ride
+            // read first event
             ev = WaterEvent.fromString(line);
             // extract starting timestamp
             dataStartTime = getEventTime(ev);
@@ -121,20 +114,20 @@ public class WaterEventSource implements SourceFunction<WaterEvent> {
             return;
         }
 
-        // peek at next ride
+        // peek at next event
         if (reader.ready() && (line = reader.readLine()) != null) {
             ev = WaterEvent.fromString(line);
         }
 
-        // read rides one-by-one and emit a random ride from the buffer each time
+        // read event one-by-one and emit a random event from the buffer each time
         while (emitSchedule.size() > 0 || reader.ready()) {
 
             // insert all events into schedule that might be emitted next
             long curNextDelayedEventTime = !emitSchedule.isEmpty() ? emitSchedule.peek().f0 : -1;
             long waterEventTime = ev != null ? getEventTime(ev) : -1;
             while(
-                    ev != null && ( // while there is a ride AND
-                            emitSchedule.isEmpty() || // and no ride in schedule OR
+                    ev != null && ( // while there is a event AND
+                            emitSchedule.isEmpty() || // and no event in schedule OR
                                     waterEventTime < curNextDelayedEventTime + maxDelayMsecs) // not enough rides in schedule
                     )
             {
@@ -142,7 +135,7 @@ public class WaterEventSource implements SourceFunction<WaterEvent> {
                 long delayedEventTime = waterEventTime + getNormalDelayMsecs(rand);
                 emitSchedule.add(new Tuple2<Long, Object>(delayedEventTime, ev));
 
-                // read next ride
+                // read next event
                 if (reader.ready() && (line = reader.readLine()) != null) {
                     ev = WaterEvent.fromString(line);
                     waterEventTime = getEventTime(ev);
@@ -165,7 +158,7 @@ public class WaterEventSource implements SourceFunction<WaterEvent> {
 
             if(head.f1 instanceof WaterEvent) {
                 WaterEvent emitEvent = (WaterEvent)head.f1;
-                // emit ride
+                // emit event
                 sourceContext.collectWithTimestamp(emitEvent, getEventTime(emitEvent));
             }
             else if(head.f1 instanceof Watermark) {

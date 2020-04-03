@@ -10,11 +10,9 @@ import java.util.Locale;
 
 
 /**
- * A TaxiFare is a taxi fare event.
- *
- * A TaxiFare consists of
- * - the rideId of the event
- * - the time of the event
+ * A WaterEvent is a Water event.
+ *consists of
+ * id,timestamp,disOxy,temp,ph,conductivity,turbidity,orp,barrierid,siteid
  *
  */
 public class WaterEvent implements Serializable {
@@ -73,7 +71,7 @@ public class WaterEvent implements Serializable {
     public static WaterEvent fromString(String line) {
 
         String[] tokens = line.split(",");
-        if (tokens.length != 11) {
+        if (tokens.length != 10) {
             throw new RuntimeException("Invalid record: " + line);
         }
 
@@ -89,8 +87,9 @@ public class WaterEvent implements Serializable {
             waterEvent.turbidity = Float.parseFloat(tokens[6]) ;
             waterEvent.orp = Float.parseFloat(tokens[7]) ;
          //   waterEvent.orp = StringUtils.isNumeric(tokens[7]) ? Float.parseFloat(tokens[7]) : 0.0f;
-            waterEvent.barrierId = tokens[8];
-            waterEvent.siteId = tokens[9];
+            waterEvent.siteId = tokens[8];
+            waterEvent.barrierId = tokens[9];
+
 
         } catch (NumberFormatException nfe) {
             throw new RuntimeException("Invalid record: " + line, nfe);
